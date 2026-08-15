@@ -1,17 +1,15 @@
-import React from "react";
+import React from "react"
 
-interface SaveButtonProps {
-    top: number;
-    left: number;
-    onClick: () => void;
-}
-
-export default function SaveButton({ top, left, onClick }: SaveButtonProps) {
-    return (
-        <button
-            onMouseDown={(e) =>
-        e.preventDefault()
-      }
+export default function SaveButton({
+  top,
+  left,
+  onClick
+}) {
+  return (
+    <button
+      onMouseDown={(event) => {
+        event.preventDefault()
+      }}
       onClick={onClick}
       style={{
         position: "fixed",
@@ -39,7 +37,7 @@ export default function SaveButton({ top, left, onClick }: SaveButtonProps) {
           "0 3px 12px rgba(0,0,0,0.25)"
       }}
     >
-      Save
+      Save to MemDev
     </button>
   )
 }

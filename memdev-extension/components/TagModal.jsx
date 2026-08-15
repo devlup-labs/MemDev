@@ -1,37 +1,47 @@
-import React , { useState } from 'react';
-interface TagModalProps {
-    OnSave:(data: {
-        title? : string
-        note? : string
-        tags? : string[]
-    }) => void;
-    onCancel: () => void
-}
+import React, {
+  useState
+} from "react"
 
+export default function TagModal({
+  onSave,
+  onCancel
+}) {
+  const [title, setTitle] =
+    useState("")
 
-export default function TagModal({OnSave, 
-    onCancel}: TagModalProps) {
-        const [title, setTitle] = useState("");
-        const [note, setNote] = useState("");
-        const [tags, setTags] = useState("");
-        const handleSave = () => {
-            const parsedTags = tags.split(",")
-                                   .map(tag => tag.trim())
-                                   .filter(tag => tag.length > 0)
-            OnSave({
-                title : title.trim() || undefined,
-                note : note.trim() || undefined,
-                tags : parsedTags 
-            })
-        };
+  const [note, setNote] =
+    useState("")
 
-return (
-        <div
-        style={{
+  const [tags, setTags] =
+    useState("")
+
+  function handleSave() {
+    const parsedTags =
+      tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+
+    onSave({
+      title: title.trim() || undefined,
+
+      note: note.trim() || undefined,
+
+      tags: parsedTags
+    })
+  }
+
+  return (
+    <div
+      style={{
         position: "fixed",
+
         zIndex: 2147483647,
+
         top: "50%",
+
         left: "50%",
+
         transform:
           "translate(-50%, -50%)",
 
@@ -50,9 +60,12 @@ return (
           "Arial, sans-serif"
       }}
     >
+
       <h3>
-        Save Note
+        Save to MemDev
       </h3>
+
+      {/* TITLE */}
 
       <label>
         Title
@@ -60,8 +73,8 @@ return (
 
       <input
         value={title}
-        onChange={e =>
-          setTitle(e.target.value)
+        onChange={(event) =>
+          setTitle(event.target.value)
         }
         placeholder="Optional title"
         style={{
@@ -73,14 +86,16 @@ return (
         }}
       />
 
+      {/* NOTE */}
+
       <label>
         Note
       </label>
 
       <textarea
         value={note}
-        onChange={e =>
-          setNote(e.target.value)
+        onChange={(event) =>
+          setNote(event.target.value)
         }
         placeholder="Optional personal note"
         rows={3}
@@ -93,16 +108,19 @@ return (
         }}
       />
 
+      {/* TAGS */}
+
       <label>
         Tags
       </label>
 
       <input
         value={tags}
-        onChange={e =>
-          setTags(e.target.value)
+        onChange={(event) =>
+          setTags(event.target.value)
         }
-        placeholder="e.g. postgres, database, indexing"
+        placeholder=
+          "postgres, database, indexing"
         style={{
           width: "100%",
           marginTop: "5px",
@@ -117,8 +135,10 @@ return (
           color: "#666"
         }}
       >
-        Separate multiple tags with commas.
+        Separate tags using commas.
       </small>
+
+      {/* BUTTONS */}
 
       <div
         style={{
@@ -127,6 +147,7 @@ return (
           marginTop: "16px"
         }}
       >
+
         <button
           onClick={handleSave}
           style={{
@@ -146,7 +167,9 @@ return (
         >
           Cancel
         </button>
+
       </div>
+
     </div>
   )
 }
