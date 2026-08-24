@@ -1,35 +1,3 @@
-/*import Library from "./lib/Library.js"
-const library = new Library()
-chrome.runtime.onMessage.addListener(
-  (message, sender, sendResponse) => {
-    if (
-      message.type ===
-      "SAVE_MEMORY"
-    ) {
-      handleSaveMemory(
-        message.memory
-      )
-        .then((result) => {
-          sendResponse(result)
-        })
-        .catch((error) => {
-          console.error(
-            "Save failed:",
-            error
-          )
-          sendResponse({
-            success: false,
-            error:
-              error.message
-          })
-        })
-      return true
-
-    }
-
-  }
-)*/
-
 import { queueMemory, getPendingMemories, markSynced, incrementRetry } from "/lib/database.js"
 
 const MAX_RETRIES = 5
