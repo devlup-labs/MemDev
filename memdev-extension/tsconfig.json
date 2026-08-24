@@ -6,9 +6,11 @@
   "include": [
     ".plasmo/index.d.ts",
     "./**/*.ts",
-    "./**/*.tsx"
-  ],
+    "./**/*.tsx",
+    "contents/text_selection.jsx",
+    "contents/text_selection.tsx"],
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "paths": {
       "~*": [
         "./*"

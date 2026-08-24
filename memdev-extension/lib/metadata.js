@@ -21,9 +21,7 @@ export function getPageMetadata() {
 
   return {
     url,
-
     title: document.title || "",
-
     domain
   }
 }

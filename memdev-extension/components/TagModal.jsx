@@ -1,32 +1,19 @@
-import React, {
-  useState
-} from "react"
+import React, { useState } from "react"
 
-export default function TagModal({
-  onSave,
-  onCancel
-}) {
-  const [title, setTitle] =
-    useState("")
-
-  const [note, setNote] =
-    useState("")
-
-  const [tags, setTags] =
-    useState("")
+export default function TagModal({ selectedText = "", onSave, onCancel }) {
+  const [title, setTitle] = useState("")
+  const [note, setNote] = useState("")
+  const [tags, setTags] = useState("")
 
   function handleSave() {
-    const parsedTags =
-      tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean)
+    const parsedTags = tags
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean)
 
     onSave({
       title: title.trim() || undefined,
-
       note: note.trim() || undefined,
-
       tags: parsedTags
     })
   }
@@ -35,141 +22,111 @@ export default function TagModal({
     <div
       style={{
         position: "fixed",
-
         zIndex: 2147483647,
-
         top: "50%",
-
         left: "50%",
-
-        transform:
-          "translate(-50%, -50%)",
-
-        width: "320px",
-
+        transform: "translate(-50%, -50%)",
+        width: "340px",
         background: "white",
-
-        borderRadius: "10px",
-
-        padding: "20px",
-
-        boxShadow:
-          "0 8px 30px rgba(0,0,0,0.25)",
-
-        fontFamily:
-          "Arial, sans-serif"
+        borderRadius: "12px",
+        padding: "22px",
+        boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+        color: "#111"
       }}
     >
+      <h3 style={{ margin: "0 0 14px", fontSize: "16px" }}>Save to MemDev</h3>
 
-      <h3>
-        Save to MemDev
-      </h3>
+      {/* Preview of selected text */}
+      {selectedText && (
+        <div
+          style={{
+            fontSize: "12px",
+            background: "#f3f4f6",
+            padding: "10px",
+            borderRadius: "8px",
+            maxHeight: "80px",
+            overflow: "auto",
+            marginBottom: "14px",
+            color: "#374151",
+            lineHeight: 1.4
+          }}
+        >
+          {selectedText.slice(0, 300)}
+          {selectedText.length > 300 ? "…" : ""}
+        </div>
+      )}
 
-      {/* TITLE */}
-
-      <label>
-        Title
-      </label>
-
+      <label style={{ fontSize: "12px", fontWeight: 600 }}>Title</label>
       <input
         value={title}
-        onChange={(event) =>
-          setTitle(event.target.value)
-        }
+        onChange={(e) => setTitle(e.target.value)}
         placeholder="Optional title"
-        style={{
-          width: "100%",
-          marginTop: "5px",
-          marginBottom: "12px",
-          padding: "8px",
-          boxSizing: "border-box"
-        }}
+        style={inputStyle}
       />
 
-      {/* NOTE */}
-
-      <label>
-        Note
-      </label>
-
+      <label style={{ fontSize: "12px", fontWeight: 600 }}>Note</label>
       <textarea
         value={note}
-        onChange={(event) =>
-          setNote(event.target.value)
-        }
+        onChange={(e) => setNote(e.target.value)}
         placeholder="Optional personal note"
         rows={3}
-        style={{
-          width: "100%",
-          marginTop: "5px",
-          marginBottom: "12px",
-          padding: "8px",
-          boxSizing: "border-box"
-        }}
+        style={{ ...inputStyle, resize: "vertical" }}
       />
 
-      {/* TAGS */}
-
-      <label>
-        Tags
-      </label>
-
+      <label style={{ fontSize: "12px", fontWeight: 600 }}>Tags</label>
       <input
         value={tags}
-        onChange={(event) =>
-          setTags(event.target.value)
-        }
-        placeholder=
-          "postgres, database, indexing"
-        style={{
-          width: "100%",
-          marginTop: "5px",
-          marginBottom: "5px",
-          padding: "8px",
-          boxSizing: "border-box"
-        }}
+        onChange={(e) => setTags(e.target.value)}
+        placeholder="postgres, indexing, performance"
+        style={inputStyle}
       />
-
-      <small
-        style={{
-          color: "#666"
-        }}
-      >
-        Separate tags using commas.
+      <small style={{ color: "#6b7280", fontSize: "11px" }}>
+        Separate tags with commas
       </small>
 
-      {/* BUTTONS */}
-
-      <div
-        style={{
-          display: "flex",
-          gap: "8px",
-          marginTop: "16px"
-        }}
-      >
-
-        <button
-          onClick={handleSave}
-          style={{
-            flex: 1,
-            padding: "9px"
-          }}
-        >
+      <div style={{ display: "flex", gap: "10px", marginTop: "18px" }}>
+        <button onClick={handleSave} style={primaryBtn}>
           Save
         </button>
-
-        <button
-          onClick={onCancel}
-          style={{
-            flex: 1,
-            padding: "9px"
-          }}
-        >
+        <button onClick={onCancel} style={secondaryBtn}>
           Cancel
         </button>
-
       </div>
-
     </div>
   )
+}
+
+const inputStyle = {
+  width: "100%",
+  marginTop: "4px",
+  marginBottom: "12px",
+  padding: "9px 10px",
+  boxSizing: "border-box",
+  border: "1px solid #e5e7eb",
+  borderRadius: "8px",
+  fontSize: "13px",
+  outline: "none"
+}
+
+const primaryBtn = {
+  flex: 1,
+  padding: "10px",
+  background: "#111827",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  fontWeight: 600,
+  cursor: "pointer"
+}
+
+const secondaryBtn = {
+  flex: 1,
+  padding: "10px",
+  background: "#f3f4f6",
+  color: "#111",
+  border: "none",
+  borderRadius: "8px",
+  fontWeight: 600,
+  cursor: "pointer"
 }

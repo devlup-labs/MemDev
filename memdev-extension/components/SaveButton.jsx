@@ -1,40 +1,24 @@
-import React from "react"
-
-export default function SaveButton({
-  top,
-  left,
-  onClick
-}) {
+export default function SaveButton({ top, left, onClick }) {
   return (
     <button
-      onMouseDown={(event) => {
-        event.preventDefault()
-      }}
+      onMouseDown={(e) => e.preventDefault()} // keep selection
       onClick={onClick}
       style={{
-        position: "fixed",
-
+        position: "absolute",          // absolute works better with scrollY
         top: `${top}px`,
         left: `${left}px`,
-
         zIndex: 2147483647,
-
-        padding: "8px 12px",
-
+        pointerEvents: "auto",
         border: "none",
-
-        borderRadius: "6px",
-
+        borderRadius: "8px",
+        padding: "9px 14px",
         background: "#111827",
-
         color: "white",
-
-        fontSize: "13px",
-
+        fontSize: "12px",
+        fontWeight: "600",
         cursor: "pointer",
-
-        boxShadow:
-          "0 3px 12px rgba(0,0,0,0.25)"
+        boxShadow: "0 4px 15px rgba(0,0,0,0.25)",
+        fontFamily: "system-ui, sans-serif"
       }}
     >
       Save to MemDev
