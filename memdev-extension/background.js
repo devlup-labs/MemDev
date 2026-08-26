@@ -1,4 +1,10 @@
-import { queueMemory, getPendingMemories, markSynced, incrementRetry } from "/lib/database.js"
+import {
+  saveMemoryLocal,
+  queueMemory,
+  getPendingMemories,
+  markSynced,
+  incrementRetry
+} from "~lib/database"
 
 const MAX_RETRIES = 5
 const SYNC_ALARM = "memdev-sync"
@@ -21,6 +27,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       .catch((e) => sendResponse({ success: false, error: e.message }))
     return true
   }
+
+  // GET_SELECTION and BUILD_MEMORY_NODE are handled by the content
+  // script directly (they need DOM access this service worker doesn't
+  // have) — intentionally not handled here.
 })
 
 // ---------- core save ----------
@@ -29,7 +39,10 @@ async function handleSaveMemory(memory) {
     throw new Error("Invalid memory: missing memoryId")
   }
 
-  // Always queue first (offline-first)
+  // Offline-first: persist permanently BEFORE attempting any network call.
+  await saveMemoryLocal(memory)
+
+  // Queue it for backend sync (idempotent, safe to call every time).
   await queueMemory(memory)
 
   // Try immediate sync
@@ -49,7 +62,7 @@ async function syncOne(memory) {
   const response = await fetch("https://your-api.example.com/memories", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
       // "Authorization": "Bearer ..." // if needed
     },
     body: JSON.stringify(memory)

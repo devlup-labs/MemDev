@@ -26,38 +26,64 @@ export default function TagModal({ selectedText = "", onSave, onCancel }) {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: "340px",
-        background: "white",
-        borderRadius: "12px",
-        padding: "22px",
-        boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
-        fontFamily: "system-ui, -apple-system, sans-serif",
-        color: "#111"
+        width: "350px",
+        background: "#ffffff",
+        borderRadius: "16px",
+        padding: "20px 22px",
+        boxShadow: "0 20px 50px -10px rgba(15, 23, 42, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.06)",
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        color: "#0f172a",
+        boxSizing: "border-box"
       }}
     >
-      <h3 style={{ margin: "0 0 14px", fontSize: "16px" }}>Save to MemDev</h3>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
+        <div
+          style={{
+            width: "8px",
+            height: "8px",
+            borderRadius: "50%",
+            background: "#4f46e5"
+          }}
+        />
+        <h3
+          style={{
+            margin: 0,
+            fontSize: "15px",
+            fontWeight: 650,
+            letterSpacing: "-0.01em",
+            color: "#0f172a"
+          }}
+        >
+          Save to MemDev
+        </h3>
+      </div>
 
       {/* Preview of selected text */}
       {selectedText && (
         <div
           style={{
             fontSize: "12px",
-            background: "#f3f4f6",
-            padding: "10px",
-            borderRadius: "8px",
-            maxHeight: "80px",
+            background: "#f8fafc",
+            borderLeft: "3px solid #4f46e5",
+            borderTop: "1px solid #f1f5f9",
+            borderRight: "1px solid #f1f5f9",
+            borderBottom: "1px solid #f1f5f9",
+            padding: "9px 12px",
+            borderRadius: "0 8px 8px 0",
+            maxHeight: "72px",
             overflow: "auto",
             marginBottom: "14px",
-            color: "#374151",
-            lineHeight: 1.4
+            color: "#475569",
+            lineHeight: 1.5,
+            fontStyle: "italic"
           }}
         >
-          {selectedText.slice(0, 300)}
-          {selectedText.length > 300 ? "…" : ""}
+          “{selectedText.slice(0, 300)}
+          {selectedText.length > 300 ? "…" : ""}”
         </div>
       )}
 
-      <label style={{ fontSize: "12px", fontWeight: 600 }}>Title</label>
+      <label style={labelStyle}>Title</label>
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -65,27 +91,34 @@ export default function TagModal({ selectedText = "", onSave, onCancel }) {
         style={inputStyle}
       />
 
-      <label style={{ fontSize: "12px", fontWeight: 600 }}>Note</label>
+      <label style={labelStyle}>Note</label>
       <textarea
         value={note}
         onChange={(e) => setNote(e.target.value)}
         placeholder="Optional personal note"
         rows={3}
-        style={{ ...inputStyle, resize: "vertical" }}
+        style={{ ...inputStyle, resize: "none" }}
       />
 
-      <label style={{ fontSize: "12px", fontWeight: 600 }}>Tags</label>
+      <label style={labelStyle}>Tags</label>
       <input
         value={tags}
         onChange={(e) => setTags(e.target.value)}
         placeholder="postgres, indexing, performance"
-        style={inputStyle}
+        style={{ ...inputStyle, marginBottom: "4px" }}
       />
-      <small style={{ color: "#6b7280", fontSize: "11px" }}>
+      <small style={{ color: "#94a3b8", fontSize: "11px", display: "block", marginBottom: "16px" }}>
         Separate tags with commas
       </small>
 
-      <div style={{ display: "flex", gap: "10px", marginTop: "18px" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          paddingTop: "14px",
+          borderTop: "1px solid #f1f5f9"
+        }}
+      >
         <button onClick={handleSave} style={primaryBtn}>
           Save
         </button>
@@ -97,36 +130,50 @@ export default function TagModal({ selectedText = "", onSave, onCancel }) {
   )
 }
 
+const labelStyle = {
+  display: "block",
+  fontSize: "11px",
+  fontWeight: 600,
+  color: "#475569",
+  textTransform: "uppercase",
+  letterSpacing: "0.04em",
+  marginBottom: "4px"
+}
+
 const inputStyle = {
   width: "100%",
-  marginTop: "4px",
-  marginBottom: "12px",
-  padding: "9px 10px",
   boxSizing: "border-box",
-  border: "1px solid #e5e7eb",
+  padding: "8px 11px",
+  marginBottom: "12px",
+  background: "#f8fafc",
+  border: "1px solid #e2e8f0",
   borderRadius: "8px",
   fontSize: "13px",
-  outline: "none"
+  color: "#0f172a",
+  outline: "none",
+  fontFamily: "inherit"
 }
 
 const primaryBtn = {
-  flex: 1,
-  padding: "10px",
-  background: "#111827",
-  color: "white",
+  flex: 1.2,
+  padding: "9px 14px",
+  background: "#0f172a",
+  color: "#ffffff",
   border: "none",
   borderRadius: "8px",
+  fontSize: "13px",
   fontWeight: 600,
   cursor: "pointer"
 }
 
 const secondaryBtn = {
   flex: 1,
-  padding: "10px",
-  background: "#f3f4f6",
-  color: "#111",
+  padding: "9px 14px",
+  background: "#f1f5f9",
+  color: "#475569",
   border: "none",
   borderRadius: "8px",
+  fontSize: "13px",
   fontWeight: 600,
   cursor: "pointer"
 }

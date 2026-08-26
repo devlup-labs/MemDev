@@ -1,12 +1,13 @@
 export function generateMemoryId() {
   return crypto.randomUUID()
 }
-export function createMemoryNode(
-  content,
-  pageMetadata,
-  context,
-  userData = {}
-) {
+
+/**
+ * Canonical memory node shape. Every consumer (floating modal, popup,
+ * background sync) must build/merge data through this file so the
+ * schema can't silently drift between call sites.
+ */
+export function createMemoryNode(content, pageMetadata, context = {}, userData = {}) {
   return {
     memoryId: generateMemoryId(),
     content: content.trim(),
@@ -16,20 +17,43 @@ export function createMemoryNode(
         title: pageMetadata.title,
         domain: pageMetadata.domain
       },
-    capture: {
-        capturedAt:
-          new Date().toISOString()
+      capture: {
+        capturedAt: new Date().toISOString()
       },
-      context,
-      user: {
-        title:
-          userData.title || undefined,
-        note:
-          userData.note || undefined,
-        tags:
-          userData.tags || []
-      }
+      context: {
+        selectionType: context.selectionType || "text",
+        nearestHeading: context.nearestHeading || null
+      },
+      user: normalizeUserData(userData)
     },
     schemaVersion: 1
+  }
+}
+
+/**
+ * Normalize raw form input (title/note/tags strings from either the
+ * popup or the TagModal) into the canonical `metadata.user` shape.
+ */
+export function normalizeUserData(userData = {}) {
+  return {
+    title: userData.title?.trim() || undefined,
+    note: userData.note?.trim() || undefined,
+    tags: Array.isArray(userData.tags) ? userData.tags.filter(Boolean) : []
+  }
+}
+
+/**
+ * Merge user-entered fields (title/note/tags) into an existing memory
+ * node without touching source/context/capture. Used by the popup,
+ * which builds the base memory via BUILD_MEMORY_NODE and then attaches
+ * the form fields the user filled in.
+ */
+export function attachUserData(memory, userData = {}) {
+  return {
+    ...memory,
+    metadata: {
+      ...memory.metadata,
+      user: normalizeUserData(userData)
+    }
   }
 }

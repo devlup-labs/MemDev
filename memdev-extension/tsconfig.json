@@ -7,7 +7,7 @@
     ".plasmo/index.d.ts",
     "./**/*.ts",
     "./**/*.tsx",
-    "contents/text_selection.jsx",
+    "contents/text_selection.js",
     "contents/text_selection.tsx"],
   "compilerOptions": {
     "ignoreDeprecations": "6.0",

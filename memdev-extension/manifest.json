@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "MemDev",
+  "version": "1.0.0",
+  "description": "Capture selected text as knowledge memories",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "alarms",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "MemDev"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contents/text_selection.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ]
+}
