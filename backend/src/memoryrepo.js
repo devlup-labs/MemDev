@@ -1,6 +1,6 @@
 import pool from './db.js';
 
-export async function createMemory(memory) {
+export async function createMemory(memory, userId) {
     const {
         memoryId,
         content,
@@ -16,6 +16,7 @@ export async function createMemory(memory) {
     const query = `
         INSERT INTO memories (
             memory_id,
+            user_id,
             content,
             source_url,
             source_title,
@@ -29,7 +30,8 @@ export async function createMemory(memory) {
         )
         VALUES (
             $1, $2, $3, $4, $5,
-            $6, $7, $8, $9, $10, $11
+            $6, $7, $8, $9, $10, 
+            $11, $12
         )
         ON CONFLICT (memory_id)
         DO UPDATE SET
@@ -39,6 +41,7 @@ export async function createMemory(memory) {
 
     const values = [
         memoryId,
+        userId,
         content,
         source.url || null,
         source.title || null,
