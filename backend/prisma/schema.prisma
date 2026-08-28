@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+model User {
+  id       Int    @id @default(autoincrement())
+  username String
+  email    String @unique
+  password String
+
+  memories Memories[]
+}
+
+model Memories {
+  id              String    @id
+  userId          Int
+
+  // CAPTURE [write-once]
+  content         String
+  metadata        Json
+  schemaVersion   Int       @default(1)
+  createdAt       DateTime  @default(now())
+
+  // STATE [mutable]
+  userTitle       String?
+  tags            String[]  @default([])
+  accessCount     Int       @default(0)
+  lastAccessedAt  DateTime?
+  processingState String    @default("PERSISTED")
+
+  // SEARCH [vector]
+  embedding       Unsupported("vector")?
+  modelVersion    String?
+  generatedAt     DateTime?
+  tsVectorTags    Unsupported("tsvector")?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

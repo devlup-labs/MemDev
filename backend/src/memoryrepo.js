@@ -1,4 +1,4 @@
-import pool from './db.js';
+import prisma from '../DB/prisma.js';
 
 export async function createMemory(memory, userId) {
     const {
