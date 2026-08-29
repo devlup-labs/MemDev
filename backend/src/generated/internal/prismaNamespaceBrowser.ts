@@ -89,9 +89,8 @@ export const MemoriesScalarFieldEnum = {
   schemaVersion: 'schemaVersion',
   createdAt: 'createdAt',
   userTitle: 'userTitle',
+  userNote: 'userNote',
   tags: 'tags',
-  accessCount: 'accessCount',
-  lastAccessedAt: 'lastAccessedAt',
   processingState: 'processingState',
   modelVersion: 'modelVersion',
   generatedAt: 'generatedAt'

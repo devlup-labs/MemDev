@@ -1,5 +1,19 @@
 import prisma from '../DB/prisma.js';
 
+export async function findMemoryById(ID_memory, userId) {
+    const memory = await prisma.memories.findUnique({
+        where : {
+            id: ID_memory
+        }
+    })
+
+    if (!memory || memory.userId !== userId) {
+        return null;
+    }
+
+    return memory;
+}
+
 export async function createMemory(memoryData) {
     const {
         id,
@@ -8,6 +22,7 @@ export async function createMemory(memoryData) {
         metadata,
         schemaVersion,
         userTitle,
+        userNote,
         tags
     } = memoryData;
 
@@ -19,6 +34,7 @@ export async function createMemory(memoryData) {
             metadata,
             schemaVersion,
             userTitle,
+            userNote,
             tags
         }
     });

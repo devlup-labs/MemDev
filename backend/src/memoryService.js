@@ -1,4 +1,6 @@
-import { createMemory as createMemoryRepo } from './memoryRepo.js';
+import { findMemoryById, 
+        createMemory as createMemoryRepo 
+    } from './memoryRepo.js';
 
 export async function createMemory(memory, userId) {
     const {
@@ -7,6 +9,15 @@ export async function createMemory(memory, userId) {
         metadata,
         schemaVersion
     } = memory;
+
+    const existingMemory = await findMemoryById(
+        memoryId,
+        userId
+    );
+
+    if (existingMemory) {
+        return existingMemory;
+    }
 
     const userMetadata = metadata.user || {};
 
@@ -19,6 +30,7 @@ export async function createMemory(memory, userId) {
         schemaVersion,
 
         userTitle: userMetadata.title ?? null,
+        userNote: userMetadata.note ?? null,
         tags: userMetadata.tags ?? []
     };
 

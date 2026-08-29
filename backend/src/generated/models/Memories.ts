@@ -29,13 +29,11 @@ export type AggregateMemories = {
 export type MemoriesAvgAggregateOutputType = {
   userId: number | null
   schemaVersion: number | null
-  accessCount: number | null
 }
 
 export type MemoriesSumAggregateOutputType = {
   userId: number | null
   schemaVersion: number | null
-  accessCount: number | null
 }
 
 export type MemoriesMinAggregateOutputType = {
@@ -45,8 +43,7 @@ export type MemoriesMinAggregateOutputType = {
   schemaVersion: number | null
   createdAt: Date | null
   userTitle: string | null
-  accessCount: number | null
-  lastAccessedAt: Date | null
+  userNote: string | null
   processingState: string | null
   modelVersion: string | null
   generatedAt: Date | null
@@ -59,8 +56,7 @@ export type MemoriesMaxAggregateOutputType = {
   schemaVersion: number | null
   createdAt: Date | null
   userTitle: string | null
-  accessCount: number | null
-  lastAccessedAt: Date | null
+  userNote: string | null
   processingState: string | null
   modelVersion: string | null
   generatedAt: Date | null
@@ -74,9 +70,8 @@ export type MemoriesCountAggregateOutputType = {
   schemaVersion: number
   createdAt: number
   userTitle: number
+  userNote: number
   tags: number
-  accessCount: number
-  lastAccessedAt: number
   processingState: number
   modelVersion: number
   generatedAt: number
@@ -87,13 +82,11 @@ export type MemoriesCountAggregateOutputType = {
 export type MemoriesAvgAggregateInputType = {
   userId?: true
   schemaVersion?: true
-  accessCount?: true
 }
 
 export type MemoriesSumAggregateInputType = {
   userId?: true
   schemaVersion?: true
-  accessCount?: true
 }
 
 export type MemoriesMinAggregateInputType = {
@@ -103,8 +96,7 @@ export type MemoriesMinAggregateInputType = {
   schemaVersion?: true
   createdAt?: true
   userTitle?: true
-  accessCount?: true
-  lastAccessedAt?: true
+  userNote?: true
   processingState?: true
   modelVersion?: true
   generatedAt?: true
@@ -117,8 +109,7 @@ export type MemoriesMaxAggregateInputType = {
   schemaVersion?: true
   createdAt?: true
   userTitle?: true
-  accessCount?: true
-  lastAccessedAt?: true
+  userNote?: true
   processingState?: true
   modelVersion?: true
   generatedAt?: true
@@ -132,9 +123,8 @@ export type MemoriesCountAggregateInputType = {
   schemaVersion?: true
   createdAt?: true
   userTitle?: true
+  userNote?: true
   tags?: true
-  accessCount?: true
-  lastAccessedAt?: true
   processingState?: true
   modelVersion?: true
   generatedAt?: true
@@ -235,9 +225,8 @@ export type MemoriesGroupByOutputType = {
   schemaVersion: number
   createdAt: Date
   userTitle: string | null
+  userNote: string | null
   tags: string[]
-  accessCount: number
-  lastAccessedAt: Date | null
   processingState: string
   modelVersion: string | null
   generatedAt: Date | null
@@ -274,9 +263,8 @@ export type MemoriesWhereInput = {
   schemaVersion?: Prisma.IntFilter<"Memories"> | number
   createdAt?: Prisma.DateTimeFilter<"Memories"> | Date | string
   userTitle?: Prisma.StringNullableFilter<"Memories"> | string | null
+  userNote?: Prisma.StringNullableFilter<"Memories"> | string | null
   tags?: Prisma.StringNullableListFilter<"Memories">
-  accessCount?: Prisma.IntFilter<"Memories"> | number
-  lastAccessedAt?: Prisma.DateTimeNullableFilter<"Memories"> | Date | string | null
   processingState?: Prisma.StringFilter<"Memories"> | string
   modelVersion?: Prisma.StringNullableFilter<"Memories"> | string | null
   generatedAt?: Prisma.DateTimeNullableFilter<"Memories"> | Date | string | null
@@ -291,9 +279,8 @@ export type MemoriesOrderByWithRelationInput = {
   schemaVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  userNote?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
-  lastAccessedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   processingState?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   generatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -311,9 +298,8 @@ export type MemoriesWhereUniqueInput = Prisma.AtLeast<{
   schemaVersion?: Prisma.IntFilter<"Memories"> | number
   createdAt?: Prisma.DateTimeFilter<"Memories"> | Date | string
   userTitle?: Prisma.StringNullableFilter<"Memories"> | string | null
+  userNote?: Prisma.StringNullableFilter<"Memories"> | string | null
   tags?: Prisma.StringNullableListFilter<"Memories">
-  accessCount?: Prisma.IntFilter<"Memories"> | number
-  lastAccessedAt?: Prisma.DateTimeNullableFilter<"Memories"> | Date | string | null
   processingState?: Prisma.StringFilter<"Memories"> | string
   modelVersion?: Prisma.StringNullableFilter<"Memories"> | string | null
   generatedAt?: Prisma.DateTimeNullableFilter<"Memories"> | Date | string | null
@@ -328,9 +314,8 @@ export type MemoriesOrderByWithAggregationInput = {
   schemaVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userTitle?: Prisma.SortOrderInput | Prisma.SortOrder
+  userNote?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
-  lastAccessedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   processingState?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   generatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -352,9 +337,8 @@ export type MemoriesScalarWhereWithAggregatesInput = {
   schemaVersion?: Prisma.IntWithAggregatesFilter<"Memories"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Memories"> | Date | string
   userTitle?: Prisma.StringNullableWithAggregatesFilter<"Memories"> | string | null
+  userNote?: Prisma.StringNullableWithAggregatesFilter<"Memories"> | string | null
   tags?: Prisma.StringNullableListFilter<"Memories">
-  accessCount?: Prisma.IntWithAggregatesFilter<"Memories"> | number
-  lastAccessedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Memories"> | Date | string | null
   processingState?: Prisma.StringWithAggregatesFilter<"Memories"> | string
   modelVersion?: Prisma.StringNullableWithAggregatesFilter<"Memories"> | string | null
   generatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Memories"> | Date | string | null
@@ -367,9 +351,8 @@ export type MemoriesCreateInput = {
   schemaVersion?: number
   createdAt?: Date | string
   userTitle?: string | null
+  userNote?: string | null
   tags?: Prisma.MemoriesCreatetagsInput | string[]
-  accessCount?: number
-  lastAccessedAt?: Date | string | null
   processingState?: string
   modelVersion?: string | null
   generatedAt?: Date | string | null
@@ -384,9 +367,8 @@ export type MemoriesUncheckedCreateInput = {
   schemaVersion?: number
   createdAt?: Date | string
   userTitle?: string | null
+  userNote?: string | null
   tags?: Prisma.MemoriesCreatetagsInput | string[]
-  accessCount?: number
-  lastAccessedAt?: Date | string | null
   processingState?: string
   modelVersion?: string | null
   generatedAt?: Date | string | null
@@ -399,9 +381,8 @@ export type MemoriesUpdateInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -416,9 +397,8 @@ export type MemoriesUncheckedUpdateInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -432,9 +412,8 @@ export type MemoriesCreateManyInput = {
   schemaVersion?: number
   createdAt?: Date | string
   userTitle?: string | null
+  userNote?: string | null
   tags?: Prisma.MemoriesCreatetagsInput | string[]
-  accessCount?: number
-  lastAccessedAt?: Date | string | null
   processingState?: string
   modelVersion?: string | null
   generatedAt?: Date | string | null
@@ -447,9 +426,8 @@ export type MemoriesUpdateManyMutationInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -463,9 +441,8 @@ export type MemoriesUncheckedUpdateManyInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -497,9 +474,8 @@ export type MemoriesCountOrderByAggregateInput = {
   schemaVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userTitle?: Prisma.SortOrder
+  userNote?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
-  lastAccessedAt?: Prisma.SortOrder
   processingState?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
@@ -508,7 +484,6 @@ export type MemoriesCountOrderByAggregateInput = {
 export type MemoriesAvgOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   schemaVersion?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
 }
 
 export type MemoriesMaxOrderByAggregateInput = {
@@ -518,8 +493,7 @@ export type MemoriesMaxOrderByAggregateInput = {
   schemaVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userTitle?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
-  lastAccessedAt?: Prisma.SortOrder
+  userNote?: Prisma.SortOrder
   processingState?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
@@ -532,8 +506,7 @@ export type MemoriesMinOrderByAggregateInput = {
   schemaVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   userTitle?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
-  lastAccessedAt?: Prisma.SortOrder
+  userNote?: Prisma.SortOrder
   processingState?: Prisma.SortOrder
   modelVersion?: Prisma.SortOrder
   generatedAt?: Prisma.SortOrder
@@ -542,7 +515,6 @@ export type MemoriesMinOrderByAggregateInput = {
 export type MemoriesSumOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   schemaVersion?: Prisma.SortOrder
-  accessCount?: Prisma.SortOrder
 }
 
 export type MemoriesCreateNestedManyWithoutUserInput = {
@@ -615,9 +587,8 @@ export type MemoriesCreateWithoutUserInput = {
   schemaVersion?: number
   createdAt?: Date | string
   userTitle?: string | null
+  userNote?: string | null
   tags?: Prisma.MemoriesCreatetagsInput | string[]
-  accessCount?: number
-  lastAccessedAt?: Date | string | null
   processingState?: string
   modelVersion?: string | null
   generatedAt?: Date | string | null
@@ -630,9 +601,8 @@ export type MemoriesUncheckedCreateWithoutUserInput = {
   schemaVersion?: number
   createdAt?: Date | string
   userTitle?: string | null
+  userNote?: string | null
   tags?: Prisma.MemoriesCreatetagsInput | string[]
-  accessCount?: number
-  lastAccessedAt?: Date | string | null
   processingState?: string
   modelVersion?: string | null
   generatedAt?: Date | string | null
@@ -675,9 +645,8 @@ export type MemoriesScalarWhereInput = {
   schemaVersion?: Prisma.IntFilter<"Memories"> | number
   createdAt?: Prisma.DateTimeFilter<"Memories"> | Date | string
   userTitle?: Prisma.StringNullableFilter<"Memories"> | string | null
+  userNote?: Prisma.StringNullableFilter<"Memories"> | string | null
   tags?: Prisma.StringNullableListFilter<"Memories">
-  accessCount?: Prisma.IntFilter<"Memories"> | number
-  lastAccessedAt?: Prisma.DateTimeNullableFilter<"Memories"> | Date | string | null
   processingState?: Prisma.StringFilter<"Memories"> | string
   modelVersion?: Prisma.StringNullableFilter<"Memories"> | string | null
   generatedAt?: Prisma.DateTimeNullableFilter<"Memories"> | Date | string | null
@@ -690,9 +659,8 @@ export type MemoriesCreateManyUserInput = {
   schemaVersion?: number
   createdAt?: Date | string
   userTitle?: string | null
+  userNote?: string | null
   tags?: Prisma.MemoriesCreatetagsInput | string[]
-  accessCount?: number
-  lastAccessedAt?: Date | string | null
   processingState?: string
   modelVersion?: string | null
   generatedAt?: Date | string | null
@@ -705,9 +673,8 @@ export type MemoriesUpdateWithoutUserInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -720,9 +687,8 @@ export type MemoriesUncheckedUpdateWithoutUserInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -735,9 +701,8 @@ export type MemoriesUncheckedUpdateManyWithoutUserInput = {
   schemaVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.MemoriesUpdatetagsInput | string[]
-  accessCount?: Prisma.IntFieldUpdateOperationsInput | number
-  lastAccessedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   processingState?: Prisma.StringFieldUpdateOperationsInput | string
   modelVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   generatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -753,9 +718,8 @@ export type MemoriesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   schemaVersion?: boolean
   createdAt?: boolean
   userTitle?: boolean
+  userNote?: boolean
   tags?: boolean
-  accessCount?: boolean
-  lastAccessedAt?: boolean
   processingState?: boolean
   modelVersion?: boolean
   generatedAt?: boolean
@@ -770,9 +734,8 @@ export type MemoriesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   schemaVersion?: boolean
   createdAt?: boolean
   userTitle?: boolean
+  userNote?: boolean
   tags?: boolean
-  accessCount?: boolean
-  lastAccessedAt?: boolean
   processingState?: boolean
   modelVersion?: boolean
   generatedAt?: boolean
@@ -787,9 +750,8 @@ export type MemoriesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   schemaVersion?: boolean
   createdAt?: boolean
   userTitle?: boolean
+  userNote?: boolean
   tags?: boolean
-  accessCount?: boolean
-  lastAccessedAt?: boolean
   processingState?: boolean
   modelVersion?: boolean
   generatedAt?: boolean
@@ -804,15 +766,14 @@ export type MemoriesSelectScalar = {
   schemaVersion?: boolean
   createdAt?: boolean
   userTitle?: boolean
+  userNote?: boolean
   tags?: boolean
-  accessCount?: boolean
-  lastAccessedAt?: boolean
   processingState?: boolean
   modelVersion?: boolean
   generatedAt?: boolean
 }
 
-export type MemoriesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "content" | "metadata" | "schemaVersion" | "createdAt" | "userTitle" | "tags" | "accessCount" | "lastAccessedAt" | "processingState" | "modelVersion" | "generatedAt", ExtArgs["result"]["memories"]>
+export type MemoriesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "content" | "metadata" | "schemaVersion" | "createdAt" | "userTitle" | "userNote" | "tags" | "processingState" | "modelVersion" | "generatedAt", ExtArgs["result"]["memories"]>
 export type MemoriesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -836,9 +797,8 @@ export type $MemoriesPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     schemaVersion: number
     createdAt: Date
     userTitle: string | null
+    userNote: string | null
     tags: string[]
-    accessCount: number
-    lastAccessedAt: Date | null
     processingState: string
     modelVersion: string | null
     generatedAt: Date | null
@@ -1273,9 +1233,8 @@ export interface MemoriesFieldRefs {
   readonly schemaVersion: Prisma.FieldRef<"Memories", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Memories", 'DateTime'>
   readonly userTitle: Prisma.FieldRef<"Memories", 'String'>
+  readonly userNote: Prisma.FieldRef<"Memories", 'String'>
   readonly tags: Prisma.FieldRef<"Memories", 'String[]'>
-  readonly accessCount: Prisma.FieldRef<"Memories", 'Int'>
-  readonly lastAccessedAt: Prisma.FieldRef<"Memories", 'DateTime'>
   readonly processingState: Prisma.FieldRef<"Memories", 'String'>
   readonly modelVersion: Prisma.FieldRef<"Memories", 'String'>
   readonly generatedAt: Prisma.FieldRef<"Memories", 'DateTime'>

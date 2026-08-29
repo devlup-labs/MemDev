@@ -33,6 +33,7 @@ model Memories {
 
   // STATE [mutable]
   userTitle       String?
+  userNote        String?
   tags            String[]  @default([])
   //accessCount     Int       @default(0)
   //lastAccessedAt  DateTime?  [better to have them not in MVP]
