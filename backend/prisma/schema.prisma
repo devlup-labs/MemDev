@@ -34,8 +34,8 @@ model Memories {
   // STATE [mutable]
   userTitle       String?
   tags            String[]  @default([])
-  accessCount     Int       @default(0)
-  lastAccessedAt  DateTime?
+  //accessCount     Int       @default(0)
+  //lastAccessedAt  DateTime?  [better to have them not in MVP]
   processingState String    @default("PERSISTED")
 
   // SEARCH [vector]

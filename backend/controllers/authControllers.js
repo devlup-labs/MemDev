@@ -1,3 +1,4 @@
+import "dotenv/config";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 
@@ -87,6 +88,9 @@ const login = async (req, res) => {
                 message: "Invalid email or password"
             });
         }
+
+        console.log("JWT_SECRET exists:", !!process.env.JWT_SECRET);
+        console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
         const token = jwt.sign(
             {

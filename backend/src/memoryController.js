@@ -1,8 +1,8 @@
-import { createMemory } from './memoryservice.js';
+import { createMemory } from './memoryService.js';
 
 export async function postMemory(req, res) {
     try {
-        const { memoryId, content, metadata, schemaVersion } = req.body;
+        const { memoryId, content, metadata, schemaVersion } = req.body; //destructuring the incoming JSON
 
         if (
             typeof memoryId !== 'string' ||
@@ -18,7 +18,7 @@ export async function postMemory(req, res) {
             });
         }
 
-        const memory = await createMemory(req.body, req.user.userId);  //for pairing it up with auth
+        const memory = await createMemory(req.body, req.user.userId);  //for pairing it up with auth, and passing whole request
 
         res.status(201).json({
             success: true,
