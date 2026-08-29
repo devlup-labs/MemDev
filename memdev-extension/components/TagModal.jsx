@@ -20,6 +20,10 @@ export default function TagModal({ selectedText = "", onSave, onCancel }) {
 
   return (
     <div
+      data-memdev-ui="true"
+      onMouseDown={(e) => e.stopPropagation()}
+      onMouseUp={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
       style={{
         position: "fixed",
         zIndex: 2147483647,

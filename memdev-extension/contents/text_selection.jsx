@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import TurndownService from "turndown"
 import SaveButton from "/components/SaveButton.jsx"
 import TagModal from "/components/TagModal.jsx"
@@ -13,9 +13,24 @@ export default function CaptureUI() {
   const [buttonPosition, setButtonPosition] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
+  const modalOpenRef = useRef(false)
+
   // ---------- selection detection ----------
-  function handleSelection() {
+  function handleSelection(event = null) {
+      console.log(
+    "handleSelection called",
+    "modalOpen:",
+    modalOpenRef.current,
+    "event:",
+    event?.type,
+    "target:",
+    event?.target
+  )
+    if (modalOpenRef.current)  {
+    return
+  }
     const sel = window.getSelection()
+
     if (!sel || sel.rangeCount === 0 || sel.isCollapsed) {
       setButtonPosition(null)
       setSelection(null)
@@ -57,21 +72,30 @@ export default function CaptureUI() {
   }
 
   useEffect(() => {
-    function onMouseUp() {
-      handleSelection()
+    if (showModal) {
+    return
+  }
+    function onMouseUp(event) {
+      if (modalOpenRef.current) return
+      handleSelection(event)
     }
 
     function onSelectionChange() {
+      if (modalOpenRef.current) return
       if (debounceTimer) clearTimeout(debounceTimer)
-      debounceTimer = setTimeout(handleSelection, 400)
+      debounceTimer = setTimeout(() => {
+      if (!modalOpenRef.current) {
+        handleSelection()
+      }
+    }, 400)
     }
 
     document.addEventListener("mouseup", onMouseUp)
-    document.addEventListener("selectionchange", onSelectionChange)
+    //document.addEventListener("selectionchange", onSelectionChange)
 
     return () => {
       document.removeEventListener("mouseup", onMouseUp)
-      document.removeEventListener("selectionchange", onSelectionChange)
+      //document.removeEventListener("selectionchange", onSelectionChange)
       if (debounceTimer) clearTimeout(debounceTimer)
     }
   }, [])
@@ -124,12 +148,20 @@ export default function CaptureUI() {
   }, [])
 
   // ---------- UI handlers ----------
-  function handleSaveButton() {
+  function handleSaveButton(event) {
+    event?.preventDefault()
+    event?.stopPropagation()
     if (!selection) return
+    if (debounceTimer) {
+    clearTimeout(debounceTimer)
+    debounceTimer = null
+  }
+    modalOpenRef.current = true
     setShowModal(true)
   }
 
   function handleCancel() {
+    modalOpenRef.current = false
     setShowModal(false)
   }
 
@@ -160,6 +192,7 @@ export default function CaptureUI() {
     )
 
     // Clean up UI
+    modalOpenRef.current = false
     setShowModal(false)
     setButtonPosition(null)
     setSelection(null)
@@ -176,9 +209,9 @@ export default function CaptureUI() {
         />
       )}
 
-      {showModal && selection && (
+      {showModal  && (
         <TagModal
-          selectedText={selection.rawText}
+          selectedText={selection?.rawText || ""}
           onCancel={handleCancel}
           onSave={handleSave}
         />

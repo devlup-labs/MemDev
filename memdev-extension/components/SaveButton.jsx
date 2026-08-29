@@ -1,8 +1,18 @@
 export default function SaveButton({ top, left, onClick }) {
   return (
     <button
-      onMouseDown={(e) => e.preventDefault()} // keep selection
-      onClick={onClick}
+      onMouseDown={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
+      onMouseUp={(e) => {
+        e.stopPropagation()
+      }}
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        onClick(e)
+      }}
       style={{
         position: "absolute",          // absolute works better with scrollY
         top: `${top}px`,
