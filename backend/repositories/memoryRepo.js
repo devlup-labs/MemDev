@@ -71,3 +71,22 @@ export async function updateProcessingState(memoryId, state) {
         }
     });
 }
+
+export async function saveSearchVector(memoryId) {
+    await prisma.$executeRaw`
+        UPDATE "Memories"
+        SET "tsVectorTags" =
+            to_tsvector(
+                'simple',
+                concat_ws(
+                    ' ',
+                    "userTitle",
+                    "userNote",
+                    content,
+                    COALESCE(metadata->'context'->>'nearestHeading', ''),
+                    array_to_string(tags, ' ')
+                )
+            )
+        WHERE id = ${memoryId}
+    `;
+}
