@@ -90,10 +90,41 @@ export default function CaptureUI() {
   }
 
   // --------------------------------------------------
-  // NEAREST HEADING
-  // --------------------------------------------------
+// NEAREST HEADING
+// --------------------------------------------------
 
-  let nearestHeading = null
+let nearestHeading = null
+
+// --------------------------------------------------
+// 1. CHECK IF THE SELECTION CONTAINS A HEADING
+// --------------------------------------------------
+
+const selectedFragment = range.cloneContents()
+
+const selectedHeadings = Array.from(
+  selectedFragment.querySelectorAll("h1, h2, h3")
+)
+
+if (selectedHeadings.length > 0) {
+  // Choose the highest-level heading.
+  // h1 = level 1, h2 = level 2, h3 = level 3.
+  selectedHeadings.sort((a, b) => {
+    const levelA = Number(a.tagName.substring(1))
+    const levelB = Number(b.tagName.substring(1))
+
+    return levelA - levelB
+  })
+
+  nearestHeading =
+    selectedHeadings[0].innerText?.trim() || null
+}
+
+// --------------------------------------------------
+// 2. IF SELECTION DOES NOT CONTAIN A HEADING,
+//    FALL BACK TO PREVIOUS LOGIC
+// --------------------------------------------------
+
+if (!nearestHeading) {
   let current = startElement
 
   while (current && current !== document.body) {
@@ -123,6 +154,7 @@ export default function CaptureUI() {
 
     current = current.parentElement
   }
+}
 
   // ---------- heading path ----------
 
@@ -300,29 +332,60 @@ if (selectedIndex !== -1) {
     }
   }
 
-  // ------------------------------------------------
-  // FIND NEXT BLOCKS
-  // ------------------------------------------------
 
-  for (
-    let i = selectedIndex + 1;
-    i < allBlocks.length && after.length < 2;
-    i++
-  ) {
-    const block = allBlocks[i]
 
-    // Don't include something that contains
-    // the selected block.
-    if (block.contains(selectedBlock)) {
-      continue
-    }
+// ------------------------------------------------
+// FIND BLOCK WHERE SELECTION ENDS
+// ------------------------------------------------
 
-    const text = block.innerText?.trim()
+const endElement =
+  range.endContainer.nodeType === Node.ELEMENT_NODE
+    ? range.endContainer
+    : range.endContainer.parentElement
 
-    if (text) {
-      after.push(text.slice(0, 500))
+let endBlock = endElement
+
+while (
+  endBlock &&
+  endBlock !== document.body &&
+  !isMeaningfulBlock(endBlock)
+) {
+  endBlock = endBlock.parentElement
+}
+
+// ------------------------------------------------
+// FIND NEXT BLOCKS AFTER THE SELECTION
+// ------------------------------------------------
+
+if (endBlock) {
+  const endBlockIndex = allBlocks.indexOf(endBlock)
+
+  if (endBlockIndex !== -1) {
+    for (
+      let i = endBlockIndex + 1;
+      i < allBlocks.length && after.length < 2;
+      i++
+    ) {
+      const block = allBlocks[i]
+
+      // Make absolutely sure we don't accidentally
+      // include the selected block itself.
+      if (
+        block === endBlock ||
+        block.contains(endBlock) ||
+        endBlock.contains(block)
+      ) {
+        continue
+      }
+
+      const text = block.innerText?.trim()
+
+      if (text) {
+        after.push(text.slice(0, 500))
+      }
     }
   }
+}
 }
 
   return {
