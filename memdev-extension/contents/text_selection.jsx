@@ -328,7 +328,7 @@ if (selectedIndex !== -1) {
     const text = block.innerText?.trim()
 
     if (text) {
-      before.unshift(text.slice(0, 500))
+      before.unshift(text)
     }
   }
 
@@ -381,7 +381,7 @@ if (endBlock) {
       const text = block.innerText?.trim()
 
       if (text) {
-        after.push(text.slice(0, 500))
+        after.push(text)
       }
     }
   }
