@@ -83,11 +83,35 @@ export async function processMemory(memoryId) {
             }
             break;
 
-        case "INDEXED": //"INDEXED" case is already processed so no need for that, but just in case :3
+        case "INDEXED": //"INDEXED" case is already processed so no need for that, just putting a checker here now
+            if (needsReprocessing(memory)) {
+                await updateProcessingState(memoryId,"NEEDS_REEMBED");
+
+                return processMemory(memoryId);
+            }
+
             return;
 
         case "NEEDS_REEMBED":
-            
+            try{
+                const embeddingText = buildEmbeddingtext(memory);
+                const embedding = await generateEmbedding(embeddingText);
+
+                await saveEmbedding(memoryId, embedding);
+                await saveSearchVector(memoryId);
+                
+                await updateProcessingState(memoryId, "INDEXED");
+
+                await resetRetryCount(memoryId); // only after confirmed indexation
+
+                console.log("Memory saved successfully");
+
+            } catch(error) {
+                console.error("Failed to process memory");
+                
+                await incrementRetryCount(memoryId);
+                await updateProcessingState(memoryId, "FAILED");
+            }
             break;
 
         case "FAILED":
