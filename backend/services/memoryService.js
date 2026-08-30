@@ -1,6 +1,8 @@
 import { findMemoryById, 
         createMemory as createMemoryRepo 
-    } from './memoryRepo.js';
+    } from '../repositories/memoryRepo.js';
+
+import { processMemory } from './memoryProcessingService.js';
 
 export async function createMemory(memory, userId) {
     const {
@@ -31,8 +33,14 @@ export async function createMemory(memory, userId) {
 
         userTitle: userMetadata.title ?? null,
         userNote: userMetadata.note ?? null,
-        tags: userMetadata.tags ?? []
+        tags: userMetadata.tags ?? [],
+
+        processingState: "PERSISTED"
     };
 
-    return await createMemoryRepo(memoryData);
+    const createdMemory = await createMemoryRepo(memoryData);
+
+    await processMemory(createdMemory.id);
+
+    return createdMemory;
 }

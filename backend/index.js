@@ -2,8 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import authRoutes from './routes/authRoutes.js';
-import authenticateToken from './middleware/authMiddleware.js';
-import { postMemory } from './src/memoryController.js';
+import memoryRoutes from './routes/memoryRoutes.js';
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRoutes);
 
-app.post('/memories', authenticateToken, postMemory);
+app.use("/memories", memoryRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

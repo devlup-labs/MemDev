@@ -1,4 +1,4 @@
-import { createMemory } from './memoryService.js';
+import { createMemory } from '../services/memoryService.js';
 
 export async function postMemory(req, res) {
     try {
