@@ -92,8 +92,11 @@ export const MemoriesScalarFieldEnum = {
   userNote: 'userNote',
   tags: 'tags',
   processingState: 'processingState',
+  retryCount: 'retryCount',
+  updatedAt: 'updatedAt',
   modelVersion: 'modelVersion',
-  generatedAt: 'generatedAt'
+  embeddingGeneratedAt: 'embeddingGeneratedAt',
+  tsVectorTagsGeneratedAt: 'tsVectorTagsGeneratedAt'
 } as const
 
 export type MemoriesScalarFieldEnum = (typeof MemoriesScalarFieldEnum)[keyof typeof MemoriesScalarFieldEnum]

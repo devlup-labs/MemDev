@@ -35,15 +35,19 @@ model Memories {
   userTitle       String?
   userNote        String?
   tags            String[]  @default([])
-  //accessCount     Int       @default(0)
-  //lastAccessedAt  DateTime?  [better to have them not in MVP]
   processingState String    @default("PERSISTED")
+  retryCount      Int @default(0)
+  
+  //MEMORY STATE
+  updatedAt       DateTime @updatedAt
 
   // SEARCH [vector]
   embedding       Unsupported("vector")?
   modelVersion    String?
-  generatedAt     DateTime?
+  embeddingGeneratedAt     DateTime?
+  
   tsVectorTags    Unsupported("tsvector")?
+  tsVectorTagsGeneratedAt  DateTime?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

@@ -56,7 +56,7 @@ export async function saveEmbedding(memoryId, embedding){
         SET
             embedding = ${vector}::vector,
             "modelVersion" = 'BAAI/bge-base-en-v1.5',
-            "generatedAt" = CURRENT_TIMESTAMP
+            "embeddingGeneratedAt" = CURRENT_TIMESTAMP
         WHERE id = ${memoryId}
     `;
 }
@@ -86,7 +86,32 @@ export async function saveSearchVector(memoryId) {
                     COALESCE(metadata->'context'->>'nearestHeading', ''),
                     array_to_string(tags, ' ')
                 )
-            )
+            ),
+            "tsVectorTagsGeneratedAt" = CURRENT_TIMESTAMP
         WHERE id = ${memoryId}
     `;
+}
+
+export async function incrementRetryCount(memoryId) {
+    return await prisma.memories.update({
+        where: {
+            id: memoryId
+        },
+        data: {
+            retryCount: {
+                increment: 1
+            }
+        }
+    });
+}
+
+export async function resetRetryCount(memoryId) {
+    return await prisma.memories.update({
+        where: {
+            id: memoryId
+        },
+        data: {
+            retryCount: 0
+        }
+    });
 }
