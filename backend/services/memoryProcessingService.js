@@ -3,12 +3,24 @@ import { generateEmbedding } from "./embeddingService.js";
 
 const retries = 5;
 
-function buildEmbeddingtext(memory){ //still unclear on the surrounding block type metadata thing, will add later only this part requires changing
+function buildEmbeddingtext(memory){
+    const context = memory.metadata?.context ?? {}; //still unclear on the surrounding block type metadata thing, will add later only this part requires changing
     return `
                 
     Title: ${memory.userTitle ?? ""}
-    Heading: ${memory.metadata?.context?.nearestHeading ?? ""}
+    
+    nearestHeading: ${context.nearestHeading ?? ""}
+    Heading Path: ${context.headingPath?.join(" > ") ?? ""}
+    Parent Chain: ${context.parentChain?.join(" > ") ?? ""}
+    
     Content: ${memory.content}
+    
+    Surrounding Content Before:
+    ${context.surroundingBlocks?.before?.join("\n") ?? ""}
+
+    Surrounding Content After:
+    ${context.surroundingBlocks?.after?.join("\n") ?? ""}
+    
     Notes: ${memory.userNote ?? ""}
     Tags: ${memory.tags?.join(", ") ?? ""}`.trim();
 }

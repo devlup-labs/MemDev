@@ -34,8 +34,6 @@ export async function createMemory(memory, userId) {
         userTitle: userMetadata.title ?? null,
         userNote: userMetadata.note ?? null,
         tags: userMetadata.tags ?? [],
-
-        processingState: "PERSISTED"
     };
 
     const createdMemory = await createMemoryRepo(memoryData);

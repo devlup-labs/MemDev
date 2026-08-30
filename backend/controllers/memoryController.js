@@ -10,6 +10,8 @@ export async function postMemory(req, res) {
             !content.trim() ||
             typeof metadata !== 'object' ||
             metadata === null ||
+            typeof metadata.context !== 'object' ||
+            metadata.context === null ||
             typeof metadata.capture?.capturedAt !== 'string' ||
             typeof schemaVersion !== 'number'
         ) {
