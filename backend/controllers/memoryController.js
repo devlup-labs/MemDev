@@ -1,4 +1,5 @@
 import { createMemory } from '../services/memoryService.js';
+import { getMemories } from '../repositories/memoryRepo.js';
 
 export async function postMemory(req, res) {
     try {
@@ -32,6 +33,24 @@ export async function postMemory(req, res) {
 
         res.status(500).json({
             error: 'Failed to save memory'
+        });
+    }
+}
+
+export async function getMemoryList(req, res) {
+    try {
+        const memories = await getMemories(req.user.userId);
+
+        return res.status(200).json({
+            success: true,
+            memories
+        });
+
+    } catch (error) {
+        console.error("Failed to fetch memories:", error);
+
+        return res.status(500).json({
+            error: "Failed to fetch memories"
         });
     }
 }

@@ -115,3 +115,17 @@ export async function resetRetryCount(memoryId) {
         }
     });
 }
+
+//DASHBOARD BASED FUNCTIONS START FROM HERE
+
+export async function getMemories(userId) {
+    return prisma.memories.findMany({
+        where: {
+            userId
+        },
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: 10
+    });
+}

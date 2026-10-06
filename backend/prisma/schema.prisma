@@ -1,55 +1,39 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
-  output = "../src/generated"
+  output   = "../src/generated"
 }
 
 datasource db {
   provider = "postgresql"
 }
-model User {
-  id       Int    @id @default(autoincrement())
-  username String
-  email    String @unique
-  password String
 
+model User {
+  id       Int        @id @default(autoincrement())
+  username String
+  email    String     @unique
+  password String
   memories Memories[]
 }
 
 model Memories {
-  id              String    @id
-  userId          Int
-
-  // CAPTURE [write-once]
-  content         String
-  metadata        Json
-  schemaVersion   Int       @default(1)
-  createdAt       DateTime  @default(now())
-
-  // STATE [mutable]
-  userTitle       String?
-  userNote        String?
-  tags            String[]  @default([])
-  processingState String    @default("PERSISTED")
-  retryCount      Int @default(0)
-  
-  //MEMORY STATE
-  updatedAt       DateTime @updatedAt
-
-  // SEARCH [vector]
-  embedding       Unsupported("vector")?
-  modelVersion    String?
-  embeddingGeneratedAt     DateTime?
-  
-  tsVectorTags    Unsupported("tsvector")?
-  tsVectorTagsGeneratedAt  DateTime?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                      String                   @id
+  userId                  Int
+  content                 String
+  metadata                Json
+  schemaVersion           Int                      @default(1)
+  createdAt               DateTime                 @default(now())
+  userTitle               String?
+  tags                    String[]                 @default([])
+  processingState         String                   @default("PERSISTED")
+  embedding               Unsupported("vector")?
+  modelVersion            String?
+  tsVectorTags            Unsupported("tsvector")?
+  userNote                String?
+  embeddingGeneratedAt    DateTime?
+  retryCount              Int                      @default(0)
+  tsVectorTagsGeneratedAt DateTime?
+  updatedAt               DateTime                 @updatedAt
+  user                    User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

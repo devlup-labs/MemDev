@@ -33,7 +33,7 @@ export function needsReprocessing(memory) {
         return true;
     }
 
-    if (!memory.searchVectorGeneratedAt) {
+    if (!memory.tsVectorTagsGeneratedAt) {
         return true;
     }
 
@@ -43,7 +43,7 @@ export function needsReprocessing(memory) {
         memory.embeddingGeneratedAt.getTime();
 
     const searchVectorGeneratedAt =
-        memory.searchVectorGeneratedAt.getTime();
+        memory.tsVectorTagsGeneratedAt.getTime();
 
     return (
         updatedAt > embeddingGeneratedAt + PROCESSING_GRACE_PERIOD_MS ||
@@ -76,7 +76,7 @@ export async function processMemory(memoryId) {
                 console.log("Memory saved successfully");
 
             } catch(error) {
-                console.error("Failed to process memory");
+                console.error("Failed to process memory", error);
                 
                 await incrementRetryCount(memoryId);
                 await updateProcessingState(memoryId, "FAILED");
@@ -107,7 +107,7 @@ export async function processMemory(memoryId) {
                 console.log("Memory saved successfully");
 
             } catch(error) {
-                console.error("Failed to process memory");
+                console.error("Failed to process memory", error);
                 
                 await incrementRetryCount(memoryId);
                 await updateProcessingState(memoryId, "FAILED");
