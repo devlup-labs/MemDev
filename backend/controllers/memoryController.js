@@ -1,5 +1,5 @@
 import { createMemory } from '../services/memoryService.js';
-import { getMemories } from '../repositories/memoryRepo.js';
+import { getMemories, findMemoryById } from '../repositories/memoryRepo.js';
 
 export async function postMemory(req, res) {
     try {
@@ -51,6 +51,33 @@ export async function getMemoryList(req, res) {
 
         return res.status(500).json({
             error: "Failed to fetch memories"
+        });
+    }
+}
+
+export async function getMemoryDetail(req, res) {
+    try {
+        const memory = await findMemoryById(
+            req.params.id,
+            req.user.userId
+        );
+
+        if (!memory) {
+            return res.status(404).json({
+                error: "Memory not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            memory
+        });
+
+    } catch (error) {
+        console.error("Failed to fetch memory:", error);
+
+        return res.status(500).json({
+            error: "Failed to fetch memory"
         });
     }
 }
