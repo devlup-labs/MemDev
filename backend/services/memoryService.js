@@ -1,8 +1,10 @@
 import { findMemoryById, 
-        createMemory as createMemoryRepo 
+        createMemory as createMemoryRepo,
+        searchMemories as searchMemoriesRepo 
     } from '../repositories/memoryRepo.js';
 
 import { processMemory } from './memoryProcessingService.js';
+import { generateEmbedding } from './embeddingService.js';
 
 export async function createMemory(memory, userId) {
     const {
@@ -41,4 +43,14 @@ export async function createMemory(memory, userId) {
     await processMemory(createdMemory.id);
 
     return createdMemory;
+}
+
+export async function searchMemories(query, userId) {
+    const queryEmbedding = await generateEmbedding(query);
+
+    return await searchMemoriesRepo(
+        userId,
+        query,
+        queryEmbedding
+    );
 }

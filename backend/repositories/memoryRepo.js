@@ -129,3 +129,62 @@ export async function getMemories(userId) {
         take: 10
     });
 }
+
+
+export async function searchMemories(userId, query, queryEmbedding) {
+    const vector = `[${queryEmbedding.join(",")}]`;
+
+    return prisma.$queryRaw`
+        WITH lexical AS (
+            SELECT
+                id,
+                ROW_NUMBER() OVER (
+                    ORDER BY ts_rank_cd(
+                        "tsVectorTags",
+                        plainto_tsquery('simple', ${query})
+                    ) DESC
+                ) AS lexical_rank
+            FROM "Memories"
+            WHERE
+                "userId" = ${userId}
+                AND "processingState" = 'INDEXED'
+                AND "tsVectorTags" IS NOT NULL
+                AND "tsVectorTags" @@ plainto_tsquery('simple', ${query})
+            LIMIT 20
+        ),
+
+        semantic AS (
+            SELECT
+                id,
+                ROW_NUMBER() OVER (
+                    ORDER BY embedding <=> ${vector}::vector
+                ) AS semantic_rank
+            FROM "Memories"
+            WHERE
+                "userId" = ${userId}
+                AND "processingState" = 'INDEXED'
+                AND embedding IS NOT NULL
+            ORDER BY embedding <=> ${vector}::vector
+            LIMIT 20
+        ),
+
+        combined AS (
+            SELECT
+                COALESCE(lexical.id, semantic.id) AS id,
+                COALESCE(1.0 / (60 + lexical.lexical_rank), 0) +
+                COALESCE(1.0 / (60 + semantic.semantic_rank), 0) AS score
+            FROM lexical
+            FULL OUTER JOIN semantic
+                ON lexical.id = semantic.id
+        )
+
+        SELECT
+            m.*,
+            combined.score
+        FROM combined
+        JOIN "Memories" m
+            ON m.id = combined.id
+        ORDER BY combined.score DESC
+        LIMIT 10;
+    `;
+}

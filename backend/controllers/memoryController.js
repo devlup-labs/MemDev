@@ -1,4 +1,4 @@
-import { createMemory } from '../services/memoryService.js';
+import { createMemory, searchMemories } from '../services/memoryService.js';
 import { getMemories, findMemoryById } from '../repositories/memoryRepo.js';
 
 export async function postMemory(req, res) {
@@ -78,6 +78,35 @@ export async function getMemoryDetail(req, res) {
 
         return res.status(500).json({
             error: "Failed to fetch memory"
+        });
+    }
+}
+
+export async function searchMemory(req, res) {
+    try {
+        const { query } = req.body;
+
+        if (typeof query !== 'string' || !query.trim()) {
+            return res.status(400).json({
+                error: "Search query is required"
+            });
+        }
+
+        const memories = await searchMemories(
+            query.trim(),
+            req.user.userId
+        );
+
+        return res.status(200).json({
+            success: true,
+            memories
+        });
+
+    } catch (error) {
+        console.error("Failed to search memories:", error);
+
+        return res.status(500).json({
+            error: "Failed to search memories"
         });
     }
 }
