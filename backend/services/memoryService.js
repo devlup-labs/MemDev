@@ -1,6 +1,7 @@
 import { findMemoryById, 
         createMemory as createMemoryRepo,
-        searchMemories as searchMemoriesRepo 
+        searchMemories as searchMemoriesRepo,
+        updateMemory as updateMemoryRepo 
     } from '../repositories/memoryRepo.js';
 
 import { processMemory } from './memoryProcessingService.js';
@@ -11,7 +12,10 @@ export async function createMemory(memory, userId) {
         memoryId,
         content,
         metadata,
-        schemaVersion
+        schemaVersion,
+        userTitle,
+        userNote,
+        tags
     } = memory;
 
     const existingMemory = await findMemoryById(
@@ -23,8 +27,6 @@ export async function createMemory(memory, userId) {
         return existingMemory;
     }
 
-    const userMetadata = metadata.user || {};
-
     const memoryData = {
         id: memoryId,
         userId,
@@ -33,9 +35,9 @@ export async function createMemory(memory, userId) {
         metadata,
         schemaVersion,
 
-        userTitle: userMetadata.title ?? null,
-        userNote: userMetadata.note ?? null,
-        tags: userMetadata.tags ?? [],
+        userTitle: userTitle ?? null,
+        userNote: userNote ?? null,
+        tags: tags ?? []
     };
 
     const createdMemory = await createMemoryRepo(memoryData);
@@ -52,5 +54,13 @@ export async function searchMemories(query, userId) {
         userId,
         query,
         queryEmbedding
+    );
+}
+
+export async function updateMemory(memoryId, userId, updates) {
+    return await updateMemoryRepo(
+        memoryId,
+        userId,
+        updates
     );
 }

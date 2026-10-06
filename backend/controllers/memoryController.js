@@ -1,9 +1,10 @@
-import { createMemory, searchMemories } from '../services/memoryService.js';
+import { createMemory, searchMemories, updateMemory } from '../services/memoryService.js';
 import { getMemories, findMemoryById } from '../repositories/memoryRepo.js';
 
 export async function postMemory(req, res) {
     try {
-        const { memoryId, content, metadata, schemaVersion } = req.body; //destructuring the incoming JSON
+        const {
+            memoryId, content, metadata, schemaVersion, userTitle, userNote, tags} = req.body;
 
         if (
             typeof memoryId !== 'string' ||
@@ -21,9 +22,42 @@ export async function postMemory(req, res) {
             });
         }
 
-        const memory = await createMemory(req.body, req.user.userId);  //for pairing it up with auth, and passing whole request
+        if (
+            userTitle !== undefined &&
+            typeof userTitle !== 'string'
+        ) {
+            return res.status(400).json({
+                error: 'userTitle must be a string'
+            });
+        }
 
-        res.status(201).json({
+        if (
+            userNote !== undefined &&
+            typeof userNote !== 'string'
+        ) {
+            return res.status(400).json({
+                error: 'userNote must be a string'
+            });
+        }
+
+        if (
+            tags !== undefined &&
+            (
+                !Array.isArray(tags) ||
+                !tags.every(tag => typeof tag === 'string')
+            )
+        ) {
+            return res.status(400).json({
+                error: 'tags must be an array of strings'
+            });
+        }
+
+        const memory = await createMemory(
+            req.body,
+            req.user.userId
+        );
+
+        return res.status(201).json({
             success: true,
             memory
         });
@@ -31,7 +65,7 @@ export async function postMemory(req, res) {
     } catch (error) {
         console.error('Failed to create memory:', error);
 
-        res.status(500).json({
+        return res.status(500).json({
             error: 'Failed to save memory'
         });
     }
@@ -107,6 +141,80 @@ export async function searchMemory(req, res) {
 
         return res.status(500).json({
             error: "Failed to search memories"
+        });
+    }
+}
+
+export async function updateMemoryDetail(req, res) {
+    try {
+        const { userTitle, userNote, tags } = req.body;
+
+        if (
+            userTitle !== undefined &&
+            typeof userTitle !== "string"
+        ) {
+            return res.status(400).json({
+                error: "userTitle must be a string"
+            });
+        }
+
+        if (
+            userNote !== undefined &&
+            typeof userNote !== "string"
+        ) {
+            return res.status(400).json({
+                error: "userNote must be a string"
+            });
+        }
+
+        if (
+            tags !== undefined &&
+            (
+                !Array.isArray(tags) ||
+                !tags.every(tag => typeof tag === "string")
+            )
+        ) {
+            return res.status(400).json({
+                error: "tags must be an array of strings"
+            });
+        }
+
+        if (
+            userTitle === undefined &&
+            userNote === undefined &&
+            tags === undefined
+        ) {
+            return res.status(400).json({
+                error: "No fields to update"
+            });
+        }
+
+        const memory = await updateMemory(
+            req.params.id,
+            req.user.userId,
+            {
+                userTitle,
+                userNote,
+                tags
+            }
+        );
+
+        if (!memory) {
+            return res.status(404).json({
+                error: "Memory not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            memory
+        });
+
+    } catch (error) {
+        console.error("Failed to update memory:", error);
+
+        return res.status(500).json({
+            error: "Failed to update memory"
         });
     }
 }

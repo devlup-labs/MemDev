@@ -131,7 +131,7 @@ export async function getMemories(userId) {
 }
 
 
-export async function searchMemories(userId, query, queryEmbedding) {
+export async function searchMemories(userId, query, queryEmbedding) { //SEARCH AND RETRIEVAL ALGORITHM
     const vector = `[${queryEmbedding.join(",")}]`;
 
     return prisma.$queryRaw`
@@ -179,7 +179,22 @@ export async function searchMemories(userId, query, queryEmbedding) {
         )
 
         SELECT
-            m.*,
+            m.id,
+            m."userId",
+            m.content,
+            m.metadata,
+            m."schemaVersion",
+            m."createdAt",
+            m."updatedAt",
+            m."userTitle",
+            m."userNote",
+            m.tags,
+            m."processingState",
+            m."retryCount",
+            m."modelVersion",
+            m."embeddingGeneratedAt",
+            m."tsVectorTagsGeneratedAt",
+            m."tsVectorTags"::text AS "tsVectorTags",
             combined.score
         FROM combined
         JOIN "Memories" m
@@ -187,4 +202,30 @@ export async function searchMemories(userId, query, queryEmbedding) {
         ORDER BY combined.score DESC
         LIMIT 10;
     `;
+}
+
+export async function updateMemory(memoryId, userId, updates) {
+    const { userTitle, userNote, tags } = updates;
+
+    const memory = await prisma.memories.findFirst({
+        where: {
+            id: memoryId,
+            userId
+        }
+    });
+
+    if (!memory) {
+        return null;
+    }
+
+    return prisma.memories.update({
+        where: {
+            id: memoryId
+        },
+        data: {
+            userTitle,
+            userNote,
+            tags
+        }
+    });
 }
