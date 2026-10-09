@@ -131,7 +131,7 @@ export async function getMemories(userId) {
 }
 
 
-export async function searchMemories(userId, query, queryEmbedding) { //SEARCH AND RETRIEVAL ALGORITHM
+export async function searchMemories(userId, query, queryEmbedding) {
     const vector = `[${queryEmbedding.join(",")}]`;
 
     return prisma.$queryRaw`
@@ -168,14 +168,75 @@ export async function searchMemories(userId, query, queryEmbedding) { //SEARCH A
             LIMIT 20
         ),
 
+        fuzzy AS (
+            SELECT
+                m.id,
+                ROW_NUMBER() OVER (
+                    ORDER BY fs.fuzzy_score DESC
+                ) AS fuzzy_rank
+            FROM "Memories" m
+            CROSS JOIN LATERAL (
+                SELECT GREATEST(
+                    word_similarity(
+                        ${query},
+                        COALESCE(m."userTitle", '')
+                    ),
+                    word_similarity(
+                        ${query},
+                        COALESCE(m."userNote", '')
+                    ),
+                    word_similarity(${query}, m.content),
+                    word_similarity(
+                        ${query},
+                        array_to_string(m.tags, ' ')
+                    ),
+                    word_similarity(
+                        ${query},
+                        COALESCE(
+                            m.metadata->'context'->>'nearestHeading',
+                            ''
+                        )
+                    )
+                ) AS fuzzy_score
+            ) fs
+            WHERE
+                m."userId" = ${userId}
+                AND m."processingState" = 'INDEXED'
+                AND fs.fuzzy_score >= 0.35
+            ORDER BY fs.fuzzy_score DESC
+            LIMIT 20
+        ),
+
         combined AS (
             SELECT
-                COALESCE(lexical.id, semantic.id) AS id,
-                COALESCE(1.0 / (60 + lexical.lexical_rank), 0) +
-                COALESCE(1.0 / (60 + semantic.semantic_rank), 0) AS score
+                COALESCE(
+                    lexical.id,
+                    semantic.id,
+                    fuzzy.id
+                ) AS id,
+
+                COALESCE(
+                    1.0 / (60 + lexical.lexical_rank),
+                    0
+                ) +
+                COALESCE(
+                    1.0 / (60 + semantic.semantic_rank),
+                    0
+                ) +
+                COALESCE(
+                    1.0 / (60 + fuzzy.fuzzy_rank),
+                    0
+                ) AS score
+
             FROM lexical
             FULL OUTER JOIN semantic
                 ON lexical.id = semantic.id
+
+            FULL OUTER JOIN fuzzy
+                ON fuzzy.id = COALESCE(
+                    lexical.id,
+                    semantic.id
+                )
         )
 
         SELECT
