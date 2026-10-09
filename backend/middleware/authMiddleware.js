@@ -1,35 +1,72 @@
 import jwt from "jsonwebtoken";
+import prisma from "../DB/prisma.js";
 
-const authenticateToken = (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(401).json({
+            message: "Authentication token required"
+        });
+    }
+
+    const match = authHeader.match(/^Bearer\s+(\S+)$/i);
+
+    if (!match) {
+        return res.status(401).json({
+            message: "Authorization header must use Bearer"
+        });
+    }
+
+    const secret = process.env.JWT_SECRET;
+
+    if (!secret || Buffer.byteLength(secret, "utf8") < 32) {
+        console.error("JWT_SECRET is missing or too short");
+        return res.status(500).json({
+            message: "Authentication is not configured"
+        });
+    }
+
     try {
-        const authHeader = req.headers.authorization;
+        const decoded = jwt.verify(match[1], secret, {
+            algorithms: ["HS256"]
+        });
 
-        if (!authHeader) {
+        if (
+            typeof decoded !== "object" ||
+            !decoded.userId ||
+            !decoded.jti ||
+            !decoded.exp
+        ) {
             return res.status(401).json({
-                message: "Authentication token required"
+                message: "Invalid token"
             });
         }
 
-        const token = authHeader.split(" ")[1];
+        const revoked = await prisma.revokedToken.findUnique({
+            where: { id: decoded.jti }
+        });
 
-        if (!token) {
+        if (revoked) {
             return res.status(401).json({
-                message: "Invalid authorization header"
+                message: "Token has been revoked"
             });
         }
-
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET
-        );
 
         req.user = decoded;
-
         next();
-
     } catch (error) {
-        return res.status(403).json({
-            message: "Invalid or expired token"
+        if (error.name === "JsonWebTokenError" ||
+            error.name === "TokenExpiredError" ||
+            error.name === "NotBeforeError") {
+            return res.status(401).json({
+                message: "Invalid or expired token"
+            });
+        }
+
+        console.error("Authentication error:", error);
+        return res.status(500).json({
+            message: "Authentication service unavailable"
         });
     }
 };

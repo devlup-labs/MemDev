@@ -37,3 +37,9 @@ model Memories {
 
   @@index([userId])
 }
+
+model RevokedToken {
+  id        String   @id
+  expiresAt DateTime
+  @@index([expiresAt])
+}

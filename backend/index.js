@@ -8,24 +8,19 @@ import memoryRoutes from './routes/memoryRoutes.js';
 
 dotenv.config();
 
+const jwtSecret = process.env.JWT_SECRET;
+
+if (!jwtSecret || Buffer.byteLength(jwtSecret, "utf8") < 32) {
+    throw new Error(
+        "JWT_SECRET must be configured with at least 32 bytes"
+    );
+}
+
 const app = express();
 
 const PORT = 3000;
 
 app.use(express.json());
-
-app.get('/prisma-test', async (req, res) => {
-    try {
-        const result = await prisma.$queryRaw`SELECT 1 as test`;
-
-        console.log(result);
-
-        res.json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error.message });
-    }
-});
 
 app.use('/auth', authRoutes);
 

@@ -398,7 +398,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
-  Memories: 'Memories'
+  Memories: 'Memories',
+  RevokedToken: 'RevokedToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "memories"
+    modelProps: "user" | "memories" | "revokedToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -566,6 +567,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RevokedToken: {
+      payload: Prisma.$RevokedTokenPayload<ExtArgs>
+      fields: Prisma.RevokedTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RevokedTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RevokedTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.RevokedTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RevokedTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>
+        }
+        findMany: {
+          args: Prisma.RevokedTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>[]
+        }
+        create: {
+          args: Prisma.RevokedTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>
+        }
+        createMany: {
+          args: Prisma.RevokedTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RevokedTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.RevokedTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>
+        }
+        update: {
+          args: Prisma.RevokedTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.RevokedTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RevokedTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RevokedTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.RevokedTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RevokedTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.RevokedTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRevokedToken>
+        }
+        groupBy: {
+          args: Prisma.RevokedTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevokedTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RevokedTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RevokedTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -623,17 +698,25 @@ export const MemoriesScalarFieldEnum = {
   schemaVersion: 'schemaVersion',
   createdAt: 'createdAt',
   userTitle: 'userTitle',
-  userNote: 'userNote',
   tags: 'tags',
   processingState: 'processingState',
-  retryCount: 'retryCount',
-  updatedAt: 'updatedAt',
   modelVersion: 'modelVersion',
+  userNote: 'userNote',
   embeddingGeneratedAt: 'embeddingGeneratedAt',
-  tsVectorTagsGeneratedAt: 'tsVectorTagsGeneratedAt'
+  retryCount: 'retryCount',
+  tsVectorTagsGeneratedAt: 'tsVectorTagsGeneratedAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MemoriesScalarFieldEnum = (typeof MemoriesScalarFieldEnum)[keyof typeof MemoriesScalarFieldEnum]
+
+
+export const RevokedTokenScalarFieldEnum = {
+  id: 'id',
+  expiresAt: 'expiresAt'
+} as const
+
+export type RevokedTokenScalarFieldEnum = (typeof RevokedTokenScalarFieldEnum)[keyof typeof RevokedTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -904,6 +987,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   memories?: Prisma.MemoriesOmit
+  revokedToken?: Prisma.RevokedTokenOmit
 }
 
 /* Types for Logging */

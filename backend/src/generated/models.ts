@@ -10,4 +10,5 @@
  */
 export type * from './models/User.ts'
 export type * from './models/Memories.ts'
+export type * from './models/RevokedToken.ts'
 export type * from './commonInputTypes.ts'

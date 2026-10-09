@@ -1,6 +1,6 @@
 import express from "express";
 
-import { signup, login } from "../controllers/authControllers.js";
+import { signup, login, logout } from "../controllers/authControllers.js";
 import authenticateToken from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -9,6 +9,8 @@ const router = express.Router();
 router.post("/signup", signup);
 
 router.post("/login", login);
+
+router.post("/logout", authenticateToken, logout);
 
 router.get("/protected", authenticateToken, (req, res) => {
     res.json({

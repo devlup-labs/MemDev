@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Memories: 'Memories'
+  Memories: 'Memories',
+  RevokedToken: 'RevokedToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -89,17 +90,25 @@ export const MemoriesScalarFieldEnum = {
   schemaVersion: 'schemaVersion',
   createdAt: 'createdAt',
   userTitle: 'userTitle',
-  userNote: 'userNote',
   tags: 'tags',
   processingState: 'processingState',
-  retryCount: 'retryCount',
-  updatedAt: 'updatedAt',
   modelVersion: 'modelVersion',
+  userNote: 'userNote',
   embeddingGeneratedAt: 'embeddingGeneratedAt',
-  tsVectorTagsGeneratedAt: 'tsVectorTagsGeneratedAt'
+  retryCount: 'retryCount',
+  tsVectorTagsGeneratedAt: 'tsVectorTagsGeneratedAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type MemoriesScalarFieldEnum = (typeof MemoriesScalarFieldEnum)[keyof typeof MemoriesScalarFieldEnum]
+
+
+export const RevokedTokenScalarFieldEnum = {
+  id: 'id',
+  expiresAt: 'expiresAt'
+} as const
+
+export type RevokedTokenScalarFieldEnum = (typeof RevokedTokenScalarFieldEnum)[keyof typeof RevokedTokenScalarFieldEnum]
 
 
 export const SortOrder = {

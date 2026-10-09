@@ -27,3 +27,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type Memories = Prisma.MemoriesModel
+/**
+ * Model RevokedToken
+ * 
+ */
+export type RevokedToken = Prisma.RevokedTokenModel
